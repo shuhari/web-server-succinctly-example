@@ -1,25 +1,26 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using WebServerExample.Interfaces;
 
 namespace WebServerExample.Infrastructure
 {
     /// <summary>
     /// Implement web server
     /// </summary>
-    public class WebServer
+    public class WebServer : IWebServerBuilder
     {
         private readonly Semaphore _sem;
 
         private readonly HttpListener _listener;
 
+        private readonly MiddlewarePipeline _pipeline;
+        
         public WebServer(int concurrentCount)
         {
             _sem = new Semaphore(concurrentCount, concurrentCount);
             _listener = new HttpListener();
+            _pipeline = new MiddlewarePipeline();
         }
 
         public void Bind(string url)
@@ -38,36 +39,21 @@ namespace WebServerExample.Infrastructure
                     _sem.WaitOne();
                     var context = await _listener.GetContextAsync();
                     _sem.Release();
-                    HandleRequest(context);
+                    _pipeline.Execute(context);
                 }
             });
         }
 
-        private void HandleRequest(HttpListenerContext context)
+        public IWebServerBuilder Use(IMiddleware middleware)
         {
-            var request = context.Request;
-            var response = context.Response;
+            _pipeline.Add(middleware);
+            return this;
+        }
 
-            var urlPath = request.Url.LocalPath.TrimStart('/');
-            Console.WriteLine($"url path={urlPath}");
-            
-            try
-            {
-                string filePath = Path.Combine("files", urlPath);
-                byte[] data = File.ReadAllBytes(filePath);
-
-                response.ContentType = "text/html";
-                response.ContentLength64 = data.Length;
-                response.ContentEncoding = Encoding.UTF8;
-                response.StatusCode = 200;
-                response.OutputStream.Write(data, 0, data.Length);
-                response.OutputStream.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                Console.WriteLine(ex.StackTrace);
-            }
+        public IWebServerBuilder UnhandledException(IExceptionHandler handler)
+        {
+            _pipeline.UnhandledException(handler);
+            return this;
         }
     }
 }
