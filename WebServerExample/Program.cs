@@ -2,6 +2,7 @@
 using WebServerExample.Infrastructure;
 using WebServerExample.Interfaces;
 using WebServerExample.Middlewares;
+using WebServerExample.Models;
 
 namespace WebServerExample
 {
@@ -27,10 +28,22 @@ namespace WebServerExample
         {
             builder.Use(new HttpLog());
             // builder.Use(new BlockIp("::1", "127.0.0.1"));
+
+            var routes = new Routing();
+            RegisterRoutes(routes);
+            builder.Use(routes);
+            
             builder.Use(new StaticFile());
             builder.Use(new Http404());
 
             builder.UnhandledException(new Http500());
+        }
+
+        static void RegisterRoutes(Routing routes)
+        {
+            routes.MapRoute(name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional});
         }
     }
 }

@@ -41,9 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Infrastructure\Controller.cs" />
     <Compile Include="Infrastructure\HttpUtil.cs" />
     <Compile Include="Infrastructure\MiddlewarePipeline.cs" />
+    <Compile Include="Infrastructure\RouteEntry.cs" />
+    <Compile Include="Infrastructure\RouteFragment.cs" />
     <Compile Include="Infrastructure\WebServer.cs" />
+    <Compile Include="Interfaces\IController.cs" />
     <Compile Include="Interfaces\IExceptionHandler.cs" />
     <Compile Include="Interfaces\IMiddleware.cs" />
     <Compile Include="Interfaces\IWebServerBuilder.cs" />
@@ -51,8 +56,11 @@
     <Compile Include="Middlewares\Http404.cs" />
     <Compile Include="Middlewares\Http500.cs" />
     <Compile Include="Middlewares\HttpLog.cs" />
+    <Compile Include="Middlewares\Routing.cs" />
     <Compile Include="Middlewares\StaticFile.cs" />
     <Compile Include="Models\MiddlewareResult.cs" />
+    <Compile Include="Models\RouteValueDictionary.cs" />
+    <Compile Include="Models\UrlParameter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
