@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net;
+using WebServerExample.Infrastructure;
 using WebServerExample.Interfaces;
 using WebServerExample.Models;
 
@@ -10,7 +10,7 @@ namespace WebServerExample.Middlewares
     /// </summary>
     public class HttpLog : IMiddleware
     {
-        public MiddlewareResult Execute(HttpListenerContext context)
+        public MiddlewareResult Execute(HttpServerContext context)
         {
             var request = context.Request;
             var path = request.Url.LocalPath;

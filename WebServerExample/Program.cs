@@ -28,7 +28,8 @@ namespace WebServerExample
         {
             builder.Use(new HttpLog());
             // builder.Use(new BlockIp("::1", "127.0.0.1"));
-
+            builder.Use(new SessionManager());
+            
             var routes = new Routing();
             RegisterRoutes(routes);
             builder.Use(routes);

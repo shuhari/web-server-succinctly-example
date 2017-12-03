@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using System.Net;
 using System.Text;
+using WebServerExample.Infrastructure;
 using WebServerExample.Interfaces;
 using WebServerExample.Models;
 
@@ -8,7 +8,7 @@ namespace WebServerExample.Middlewares
 {
     public class StaticFile : IMiddleware
     {
-        public MiddlewareResult Execute(HttpListenerContext context)
+        public MiddlewareResult Execute(HttpServerContext context)
         {
             var request = context.Request;
             var response = context.Response;

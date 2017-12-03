@@ -7,5 +7,6 @@ namespace WebServerExample.Infrastructure
     /// </summary>
     public abstract class Controller : IController
     {
+        public ISession Session { get; internal set; }
     }
 }

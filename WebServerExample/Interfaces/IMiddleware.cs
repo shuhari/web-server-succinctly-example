@@ -1,4 +1,4 @@
-﻿using System.Net;
+﻿using WebServerExample.Infrastructure;
 using WebServerExample.Models;
 
 namespace WebServerExample.Interfaces
@@ -13,6 +13,6 @@ namespace WebServerExample.Interfaces
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        MiddlewareResult Execute(HttpListenerContext context);
+        MiddlewareResult Execute(HttpServerContext context);
     }
 }

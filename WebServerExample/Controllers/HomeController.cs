@@ -6,7 +6,10 @@ namespace WebServerExample.Controllers
     { 
         public string Index()
         {
-            return "Index Page";
+            int counter = (Session["counter"] != null) ? (int)Session["counter"] : 0;
+            counter++;
+            Session["counter"] = counter;
+            return "Counter = " + counter;
         }
 
         public string Details(int id)

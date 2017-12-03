@@ -9,8 +9,12 @@ namespace WebServerExample.Middlewares
     {
         public void HandleException(HttpListenerContext context, Exception exp)
         {
-            Console.WriteLine(exp.Message);
-            Console.WriteLine(exp.StackTrace);
+            while (exp != null)
+            {
+                Console.WriteLine(exp.Message);
+                Console.WriteLine(exp.StackTrace);
+                exp = exp.InnerException;
+            }
 
             context.Response.Status(500, "Internal Server Error");
         }

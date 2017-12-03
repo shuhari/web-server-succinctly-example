@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Reflection;
 using WebServerExample.Infrastructure;
 using WebServerExample.Interfaces;
@@ -33,14 +32,14 @@ namespace WebServerExample.Middlewares
             return this;
         }
 
-        public MiddlewareResult Execute(HttpListenerContext context)
+        public MiddlewareResult Execute(HttpServerContext context)
         {
             foreach (var entry in _entries)
             {
                 var routeValues = entry.Match(context.Request);
                 if (routeValues != null)
                 {
-                    var controller = CreateController(routeValues);
+                    var controller = CreateController(context, routeValues);
                     var actionMethod = GetActionMethod(controller, routeValues);
                     var result = GetActionResult(controller, actionMethod, routeValues);
                     context.Response.Status(200, result);
@@ -52,15 +51,16 @@ namespace WebServerExample.Middlewares
             return MiddlewareResult.Continue;
         }
 
-        private IController CreateController(RouteValueDictionary routeValues)
+        private IController CreateController(HttpServerContext context, RouteValueDictionary routeValues)
         {
             var controllerName = (string)routeValues["controller"];
             var className = char.ToUpper(controllerName[0]) + controllerName.Substring(1) + "Controller";
             foreach (var type in GetType().Assembly.GetExportedTypes())
             {
-                if (type.Name == className && typeof(IController).IsAssignableFrom(type))
+                if (type.Name == className && typeof(Controller).IsAssignableFrom(type))
                 {
-                    var instance = (IController) Activator.CreateInstance(type);
+                    var instance = (Controller) Activator.CreateInstance(type);
+                    instance.Session = context.Session;
                     return instance;
                 }
             }

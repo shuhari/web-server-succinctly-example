@@ -32,11 +32,13 @@ namespace WebServerExample.Infrastructure
 
         internal void Execute(HttpListenerContext context)
         {
+            var serverContext = new HttpServerContext(context);
+            
             try
             {
                 foreach (var middleware in _middlewares)
                 {
-                    var result = middleware.Execute(context);
+                    var result = middleware.Execute(serverContext);
                     if (result == MiddlewareResult.Processed)
                     {
                         break;
