@@ -95,6 +95,7 @@
     <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -105,23 +106,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Infrastructure\AnonymousUser.cs" />
     <Compile Include="Infrastructure\Controller.cs" />
     <Compile Include="Infrastructure\HttpServerContext.cs" />
+    <Compile Include="Infrastructure\HttpServerRequest.cs" />
     <Compile Include="Infrastructure\HttpUtil.cs" />
     <Compile Include="Infrastructure\MiddlewarePipeline.cs" />
     <Compile Include="Infrastructure\Results\ActionResult.cs" />
     <Compile Include="Infrastructure\Results\ContentResult.cs" />
+    <Compile Include="Infrastructure\Results\RedirectResult.cs" />
     <Compile Include="Infrastructure\Results\ViewResult.cs" />
     <Compile Include="Infrastructure\RouteEntry.cs" />
     <Compile Include="Infrastructure\RouteFragment.cs" />
     <Compile Include="Infrastructure\Session.cs" />
+    <Compile Include="Infrastructure\User.cs" />
     <Compile Include="Infrastructure\WebServer.cs" />
     <Compile Include="Interfaces\IController.cs" />
     <Compile Include="Interfaces\IExceptionHandler.cs" />
     <Compile Include="Interfaces\IMiddleware.cs" />
     <Compile Include="Interfaces\ISession.cs" />
     <Compile Include="Interfaces\IWebServerBuilder.cs" />
+    <Compile Include="Middlewares\Authentication.cs" />
     <Compile Include="Middlewares\BlockIp.cs" />
+    <Compile Include="Middlewares\BodyParser.cs" />
     <Compile Include="Middlewares\Http404.cs" />
     <Compile Include="Middlewares\Http500.cs" />
     <Compile Include="Middlewares\HttpLog.cs" />

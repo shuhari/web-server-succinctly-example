@@ -24,7 +24,7 @@ namespace WebServerExample.Infrastructure
                 .ToArray();
         }
 
-        public RouteValueDictionary Match(HttpListenerRequest request)
+        public RouteValueDictionary Match(HttpServerRequest request)
         {
             var urlPath = request.Url.LocalPath.TrimStart('/');
             var urlParts = urlPath.Split('/');

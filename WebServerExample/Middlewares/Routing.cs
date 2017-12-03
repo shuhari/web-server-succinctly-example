@@ -61,7 +61,7 @@ namespace WebServerExample.Middlewares
                 if (type.Name == className && typeof(Controller).IsAssignableFrom(type))
                 {
                     var instance = (Controller) Activator.CreateInstance(type);
-                    instance.Session = context.Session;
+                    instance.HttpContext = context;
                     return instance;
                 }
             }

@@ -5,6 +5,25 @@
     <title>@Model.title</title>
 </head>
 <body>
-    <h1>Counter = @Model.counter</h1>
-</body>
+    @if (Model.user.Identity.IsAuthenticated)
+    {
+        <a href="/Home/Logout">Logout</a>
+    }
+    else
+    {
+        <form method="post" action="/Home/Login">
+            <div>
+                <label for="username">User name:</label>
+                <input type="text" name="username"/>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="password"/>
+            </div>
+            <div>
+                <button type="submit">Login</button>
+            </div>
+        </form>
+    }
+ </body>
 </html>

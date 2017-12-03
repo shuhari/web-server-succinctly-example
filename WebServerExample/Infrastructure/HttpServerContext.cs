@@ -12,12 +12,13 @@ namespace WebServerExample.Infrastructure
         public HttpServerContext(HttpListenerContext context)
         {
             _innerContext = context;
+            Request = new HttpServerRequest(context.Request);
         }
 
         private readonly HttpListenerContext _innerContext;
 
-        public HttpListenerRequest Request => _innerContext.Request;
-
+        public HttpServerRequest Request { get; private set; }
+        
         public HttpListenerResponse Response => _innerContext.Response;
 
         public IPrincipal User { get; internal set; }

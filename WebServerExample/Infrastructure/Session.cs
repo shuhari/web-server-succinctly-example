@@ -20,5 +20,11 @@ namespace WebServerExample.Infrastructure
             get { return _items.ContainsKey(name) ? _items[name] : null; }
             set { _items[name] = value; }
         }
+
+        public void Remove(string name)
+        {
+            object value;
+            _items.TryRemove(name, out value);
+        }
     }
 }
