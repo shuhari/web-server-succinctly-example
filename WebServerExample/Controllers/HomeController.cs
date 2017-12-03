@@ -1,15 +1,17 @@
 ﻿using WebServerExample.Infrastructure;
+using WebServerExample.Infrastructure.Results;
 
 namespace WebServerExample.Controllers
 {
     public class HomeController : Controller
     { 
-        public string Index()
+        public ActionResult Index()
         {
             int counter = (Session["counter"] != null) ? (int)Session["counter"] : 0;
             counter++;
             Session["counter"] = counter;
-            return "Counter = " + counter;
+            var model = new { title = "Homepage", counter = counter};
+            return View("Index", model);
         }
 
         public string Details(int id)

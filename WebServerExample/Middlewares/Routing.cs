@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using WebServerExample.Infrastructure;
+using WebServerExample.Infrastructure.Results;
 using WebServerExample.Interfaces;
 using WebServerExample.Models;
 
@@ -42,7 +43,7 @@ namespace WebServerExample.Middlewares
                     var controller = CreateController(context, routeValues);
                     var actionMethod = GetActionMethod(controller, routeValues);
                     var result = GetActionResult(controller, actionMethod, routeValues);
-                    context.Response.Status(200, result);
+                    result.Execute(context);
                     
                     return MiddlewareResult.Processed;
                 }
@@ -78,7 +79,7 @@ namespace WebServerExample.Middlewares
             return method;
         }
 
-        private string GetActionResult(IController controller, MethodInfo method,
+        private ActionResult GetActionResult(IController controller, MethodInfo method,
             RouteValueDictionary routeValues)
         {
             var methodParams = method.GetParameters();
@@ -90,8 +91,12 @@ namespace WebServerExample.Middlewares
                 paramValues[i] = paramValue;
             }
             
-            var result = (string) method.Invoke(controller, paramValues);
-            return result;
+            var result = method.Invoke(controller, paramValues);
+            var actionResult = result as ActionResult;
+            if (actionResult != null)
+                return actionResult;
+            else
+                return new ContentResult(Convert.ToString(result), "text/html");
         }
     }
 }

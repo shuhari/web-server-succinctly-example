@@ -21,5 +21,19 @@ namespace WebServerExample.Infrastructure
 
             return response;
         }
+
+        public static HttpListenerResponse Content(this HttpListenerResponse response,
+            string content, string mimeType)
+        {
+            var contentBytes = Encoding.UTF8.GetBytes(content);
+
+            response.ContentType = mimeType;
+            response.StatusCode = 200;
+            response.ContentLength64 = contentBytes.Length;
+            response.OutputStream.Write(contentBytes, 0, contentBytes.Length);
+            response.OutputStream.Close();
+
+            return response;
+        }
     }
 }
